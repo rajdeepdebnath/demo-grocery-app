@@ -11,6 +11,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { Product } from '../types/product';
 import Grid from '@mui/material/Grid';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 interface Props {
     item:Product
@@ -38,11 +40,11 @@ const CatalogItem = ({item}: Props) => {
                 </Typography>
             </CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                <IconButton aria-label="previous">
-                    <SkipNextIcon />
+                <IconButton aria-label="shopping-cart">
+                    <ShoppingCartOutlinedIcon />
                 </IconButton>
                 <IconButton aria-label="next">
-                    <SkipPreviousIcon />
+                    <FavoriteBorderOutlinedIcon />
                 </IconButton>
             </Box>
         </Box>

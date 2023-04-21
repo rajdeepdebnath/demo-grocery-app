@@ -9,11 +9,10 @@ import Catalog from '../components/Catalog';
 const Home = () => {
   
   return (
-    <div>
-      Home
+    <>
       <Catalog />
       {/* <Button variant="contained" onClick={() => dispatch(addToWishlist({ productId:1 }))}>Clear</Button> */}
-    </div>
+    </>
   )
 }
 
