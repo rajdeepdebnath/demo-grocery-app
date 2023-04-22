@@ -5,6 +5,6 @@ export type Product = {
     type:string,
     rating:number,
     img:string,
-    price:number,
+    price:string,
     available:number,
 }

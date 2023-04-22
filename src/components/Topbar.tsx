@@ -19,7 +19,7 @@ import Grid from '@mui/material/Grid';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const TopNavBar = styled('div')(({theme}) => ({
   position:'relative',
@@ -97,13 +97,19 @@ const Topbar = () => {
     navigation('/wishlist');
   }
 
+  const handleCartClick = () => {
+    navigation('/checkout');
+  }
+
 
   return (
     <TopNavBar>
       <Grid container spacing={2}>
         <Grid item xs={2} sx={gridItemStyle}>
           <Typography component="h2" 
-          sx={{ fontFamily:'Arial', fontWeight:'bold' }}>GROCERIES</Typography>
+          sx={{ fontFamily:'Arial', fontWeight:'bold' }}>
+            <Link to='/' style={{textDecoration:'none', color:'#545454'}}>GROCERIES</Link>
+          </Typography>
         </Grid>
         <Grid item xs={7} sx={gridItemStyle}>
           <Search>
@@ -116,7 +122,7 @@ const Topbar = () => {
         <Grid item xs={3} sx={gridItemStyle}>
           <Box sx={{ border:'0px solid red', width:'100%', 
           display:'flex', justifyContent:'space-evenly' }}>
-            <IconButton aria-label="cart"  onClick={() => null}>
+            <IconButton aria-label="cart"  onClick={handleCartClick}>
               <ShoppingCartOutlinedIcon fontSize='large' />
             </IconButton>
             <IconButton aria-label="profile"  onClick={() => null}>

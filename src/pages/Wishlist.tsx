@@ -1,19 +1,22 @@
 import React from 'react'
 import Button from '@mui/material/Button';
 import type { RootState } from '../state/store'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { addToWishlist, removeFromWishlist, clearWishlist } from '../state/wishlistSlice'
+import ProductList from '../components/ProductList';
 
 const Wishlist = () => {
-  const wishlist = useSelector((state: RootState) => state.wishlist.wishlistProductIds)
-  const dispatch = useDispatch()
+  const wishlistIds = useAppSelector((state: RootState) => state.wishlist.wishlistProductIds);
+  const allProducts = useAppSelector((state: RootState) => state.catalog.Products);
+  const dispatch = useAppDispatch();
+
+  const products = allProducts.filter(p => wishlistIds.includes(p.id));
+
+  console.log(products);
+  
   
   return (
-    <div>
-      Wishlist
-      {JSON.stringify(wishlist)}
-      <Button variant="contained" onClick={() => dispatch(addToWishlist({ productId:1 }))}>Clear</Button>
-    </div>
+    <ProductList title="Favorites" products={products} />
   )
 }
 
