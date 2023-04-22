@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { addToWishlist, removeFromWishlist } from '../state/wishlistSlice';
 import { RootState } from '../state/store';
 import { addToCart, removeFromCart } from '../state/cartSlice';
+import TextField from '@mui/material/TextField';
 
 interface Props {
     item:Product
@@ -63,6 +64,7 @@ const CatalogItem = ({item}: Props) => {
                 </Typography>
             </CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                {isItemInCart() && <TextField type="number" inputProps={{ min: 1, max: 10 }} />}
                 <IconButton aria-label="shopping-cart"  onClick={() => handleCartClick(item.id)}>
                     {isItemInCart() ? <ShoppingCartIcon color='success'/>  : <ShoppingCartOutlinedIcon/>}
                 </IconButton>

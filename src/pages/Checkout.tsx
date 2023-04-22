@@ -1,15 +1,21 @@
 import Box from "@mui/material/Box"
 import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
-import capitalize from "@mui/material/utils/capitalize"
 import { useAppSelector } from "../state/hooks"
 import { RootState } from "../state/store"
 import CartItem from "./CartItem"
 import Typography from "@mui/material/Typography"
+import Button from "@mui/material/Button"
+import { getCoupons } from "../api/coupon"
+import { useState } from "react"
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const Checkout = () => {
   const products = useAppSelector((state: RootState) => state.catalog.Products)
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
+  const [coupon, setCoupon] = useState('');
+  const [couponValid, setCouponValid] = useState<boolean|null>(null);
 
   const getProductPrice = (priceStr:string) => {
     return Number(priceStr.replace('£', ''));
@@ -24,6 +30,11 @@ const Checkout = () => {
       }
     });
     return total;
+  }
+
+  const handleCouponApply = () => {
+    let coupons = getCoupons();
+    setCouponValid(coupons.includes(coupon));
   }
   
   return (
@@ -43,6 +54,13 @@ const Checkout = () => {
               return <CartItem item={product} quantity={ci.quantity} />
             })}
         </Grid>
+        <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
+          {cartItems && cartItems.length!==0 && <>Promotion (Enter Coupon code): 
+          <input type="text" name="promotion" placeholder="Coupon" value={coupon} 
+            onChange={e => setCoupon(e.target.value)}/>
+            {couponValid !== null && (couponValid ? <CheckBoxIcon color="success" /> : <CancelIcon color="error" />)}
+          <Button variant="outlined" onClick={handleCouponApply}>Apply</Button></>}
+        </Box>
         {cartItems && cartItems.length!==0 && 
         <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
           <Typography component="div" variant="h5">
