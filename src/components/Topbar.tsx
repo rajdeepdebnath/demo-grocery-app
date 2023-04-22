@@ -19,6 +19,7 @@ import Grid from '@mui/material/Grid';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { useNavigate } from 'react-router-dom';
 
 const TopNavBar = styled('div')(({theme}) => ({
   position:'relative',
@@ -90,6 +91,13 @@ const gridItemStyle = {
 
 
 const Topbar = () => {
+  const navigation = useNavigate();
+
+  const handleFavoriteClick = () => {
+    navigation('/wishlist');
+  }
+
+
   return (
     <TopNavBar>
       <Grid container spacing={2}>
@@ -108,9 +116,15 @@ const Topbar = () => {
         <Grid item xs={3} sx={gridItemStyle}>
           <Box sx={{ border:'0px solid red', width:'100%', 
           display:'flex', justifyContent:'space-evenly' }}>
-            <ShoppingCartOutlinedIcon fontSize='large' />
-            <AccountCircleRoundedIcon fontSize='large' />
-            <FavoriteBorderOutlinedIcon fontSize='large' />
+            <IconButton aria-label="cart"  onClick={() => null}>
+              <ShoppingCartOutlinedIcon fontSize='large' />
+            </IconButton>
+            <IconButton aria-label="profile"  onClick={() => null}>
+              <AccountCircleRoundedIcon fontSize='large' />
+            </IconButton>
+            <IconButton aria-label="favorite"  onClick={handleFavoriteClick}>
+                <FavoriteBorderOutlinedIcon fontSize='large' />
+            </IconButton>
           </Box>
         </Grid>
       </Grid>

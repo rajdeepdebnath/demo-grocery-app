@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import {
-  createBrowserRouter,
-  RouterProvider,
+  BrowserRouter,
+  Routes,
+  Route,
 } from "react-router-dom";
 import { store } from './state/store'
 import { Provider } from 'react-redux'
@@ -13,6 +14,8 @@ import Wishlist from './pages/Wishlist';
 import Topbar from './components/Topbar';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Nomatch from './pages/Nomatch';
+import { ErrorBoundary } from "react-error-boundary";
 declare module '@mui/material/styles' {
   interface Theme {
     searchBox: {
@@ -37,29 +40,23 @@ const theme = createTheme({
 function App() {
   const [count, setCount] = useState(0);
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-    },
-    {
-      path: "/checkout",
-      element: <Checkout />,
-    },
-    {
-      path: "/wishlist",
-      element: <Wishlist />,
-    }
-  ]);
-
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Topbar />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </Provider>
+    <ErrorBoundary fallback={<div>Something went wrong!</div>}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <BrowserRouter>
+            <Topbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="*" element={<Nomatch />} />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    </ErrorBoundary>
   )
 }
 

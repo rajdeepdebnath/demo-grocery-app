@@ -13,13 +13,20 @@ import { Product } from '../types/product';
 import Grid from '@mui/material/Grid';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { useAppDispatch } from '../state/hooks';
+import { addToWishlist } from '../state/wishlistSlice';
 
 interface Props {
     item:Product
 }
 
 const CatalogItem = ({item}: Props) => {
-    console.log(item);
+    const dispatch = useAppDispatch()
+    
+    const handleFavoriteClick = (id:number) => {
+        // dispatch(addToWishlist({productId:id}));
+        throw Error(`Failed to`)
+    }
     
   return (
     <Grid item lg={6} sm={6} md={6} xs={10}>
@@ -43,8 +50,8 @@ const CatalogItem = ({item}: Props) => {
                 <IconButton aria-label="shopping-cart">
                     <ShoppingCartOutlinedIcon />
                 </IconButton>
-                <IconButton aria-label="next">
-                    <FavoriteBorderOutlinedIcon />
+                <IconButton aria-label="favorite"  onClick={() => handleFavoriteClick(item.id)}>
+                    <FavoriteBorderOutlinedIcon/>
                 </IconButton>
             </Box>
         </Box>
