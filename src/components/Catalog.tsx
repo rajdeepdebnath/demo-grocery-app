@@ -17,8 +17,6 @@ const Catalog = ({}) => {
     useEffect(() => {
       dispatch(fetchInventory());
     }, []);
-
-    console.log(products);
     
     
   return (

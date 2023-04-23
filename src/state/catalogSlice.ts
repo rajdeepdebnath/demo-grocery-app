@@ -53,7 +53,6 @@ export const catalogSlice = createSlice({
 
 
 export const fetchInventory = createAsyncThunk("catalogue/fetchInventory", async () => {
-    console.log('fetch call');
     const response = await fecthInventoryApi()
     return response
 })

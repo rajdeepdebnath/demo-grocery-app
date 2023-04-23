@@ -13,29 +13,51 @@ interface Props{
 }
 
 const ProductList = ({title, products}:Props) => {
+    const [filteredProducts, setFilteredProducts] = useState<Array<Product>|null>(null);
     const [categories, setCategories] = useState<Array<string>|null>(null);
+    const [categoryFilter, setCategoryFilter] = useState<string|null>(null);
 
     useEffect(() => {
         if(products && products.length>0){
             setCategories([...new Set(products.map(p => capitalize(p.type)))]);
         }
     }, [products])
+
+    useEffect(() => {
+        if(categoryFilter === null || categoryFilter === 'all items'){
+            setFilteredProducts(products);
+        }else if(categoryFilter !== null && products !== null){
+            setFilteredProducts(products.filter(p => p.type === categoryFilter));
+        }
+    }, [products, categoryFilter]);
+
+    const handleCatgoryFilterClick = (category:string) => {
+        console.log(category);
+        let filter = category === categoryFilter ? null : category;
+        setCategoryFilter(filter);        
+    }
     
   return (
     <Container>
         <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
-            {products && products.length>0 && <CategoryFilter label='All items' />}
-            {categories && categories.map(c => <CategoryFilter label={c} />)}
+            {products && products.length>0 
+            && <CategoryFilter handleCatgoryFilterClick={handleCatgoryFilterClick} 
+            currentCategoryFilter={categoryFilter}
+            label='All items' />}
+            {categories && categories.map(c => 
+            <CategoryFilter key={c} handleCatgoryFilterClick={handleCatgoryFilterClick} 
+            currentCategoryFilter={categoryFilter}
+            label={c} />)}
         </Box>
         <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
             {title}
         </Box>
-        {products && products.length===0 && 
+        {filteredProducts && filteredProducts.length===0 && 
         <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
             No items
         </Box>}
         <Grid container spacing={3}>
-            {products && products.map(product => <CatalogItem item={product} />)}
+            {filteredProducts && filteredProducts.map(product => <CatalogItem key={product.id} item={product} />)}
         </Grid>
     </Container>
   )
