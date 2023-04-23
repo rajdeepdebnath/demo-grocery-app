@@ -18,6 +18,7 @@
 3. cart page
 4. Favorite page
 5. Catalog Search
+6. Catalog filter
 
 ### Technical Features
 
@@ -31,3 +32,7 @@
 ### Mobile view
 
 ![](mobile.jpg)
+
+### Desktop view
+
+![](desktop.jpg)
