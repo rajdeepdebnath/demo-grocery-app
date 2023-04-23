@@ -22,8 +22,11 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import debounce from '@mui/material/utils/debounce';
-import { useAppDispatch } from '../state/hooks';
+import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { setSearchCriteria } from '../state/searchSlice';
+import { RootState } from '../state/store';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const TopNavBar = styled('div')(({theme}) => ({
   position:'relative',
@@ -95,6 +98,8 @@ const gridItemStyle = {
 
 
 const Topbar = () => {
+  const wishlistIds = useAppSelector((state: RootState) => state.wishlist.wishlistProductIds);
+  const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigate();
   const location = useLocation();
@@ -146,13 +151,22 @@ const Topbar = () => {
           <Box sx={{ border:'0px solid red', width:'100%', 
           display:'flex', justifyContent:'space-evenly' }}>
             <IconButton aria-label="cart"  onClick={handleCartClick}>
-              <ShoppingCartOutlinedIcon fontSize='large' />
+              {cartItems.length > 0
+                ? <Badge badgeContent={cartItems.length} color="primary">
+                    <ShoppingCartIcon color='success' fontSize='large' />
+                  </Badge>
+              : <ShoppingCartOutlinedIcon fontSize='large' />}
+              
             </IconButton>
             <IconButton aria-label="profile"  onClick={() => null}>
               <AccountCircleRoundedIcon fontSize='large' />
             </IconButton>
             <IconButton aria-label="favorite"  onClick={handleFavoriteClick}>
-                <FavoriteBorderOutlinedIcon fontSize='large' />
+              {wishlistIds.length > 0
+                ? <Badge badgeContent={wishlistIds.length} color="primary">
+                    <FavoriteOutlinedIcon color='error' fontSize='large' />
+                  </Badge>
+              : <FavoriteBorderOutlinedIcon fontSize='large' />}
             </IconButton>
           </Box>
         </Grid>
