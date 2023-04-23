@@ -19,6 +19,7 @@ import CartCounter from './CartCounter';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
 import styled from '@emotion/styled';
+import Chip from '@mui/material/Chip';
 
 const itemStyle = { 
     display: 'flex', 
@@ -27,12 +28,12 @@ const itemStyle = {
     height:150, 
     overflow:'hidden', 
     textOverflow:'ellipsis',
-    padding:{xs:1,md:0}
+    padding:{xs:1,md:2}
 }
 
 const descriptionStyle = {
-    fontSize:{xs:14,md:18}, 
-    lineHeight:{xs:1.2,md:2}, 
+    fontSize:{xs:14,md:14}, 
+    lineHeight:{xs:1.2,md:1.2}, 
     marginY:1,
     overflow: 'hidden',
     textOverflow: 'ellipsis'
@@ -72,13 +73,15 @@ const CatalogItem = ({item}: Props) => {
     }
 
   return (
-    <Grid item lg={6} sm={5} md={6} xs={10} sx={{ paddingX:'0 !important' }}>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} 
+    <Grid item sm={5} xs={10} sx={{ paddingX:'0 !important' }}>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} 
             sx={{ minWidth:'200px', border:0, borderRadius: '16px', 
             justifyContent: 'center', alignItems: 'center',
             boxShadow:5, padding:'0 !important' }}>
             <Box component="img" 
-                sx={{ height: 150, width:{sm: 150, xs:'100%'}, borderRadius: '16px'}}
+                sx={{ height: 150, width:{sm: 150, xs:'100%'}, border:0
+                    , marginTop:{sm:1,md:0}, marginLeft:{sm:0,md:1}
+                    , borderRadius: {xs:'16px',sm:1}}}
                 alt={item.name} src={item.img} />
             <Stack direction='column' sx={{width:'100%'}}>
                 <Box sx={itemStyle}>
@@ -90,8 +93,15 @@ const CatalogItem = ({item}: Props) => {
                         component="div">
                         {item.description}
                     </Typography>
+                    <>
+                    {item.available<10 
+                        ? <Chip label={`Only ${item.available} left`} 
+                        sx={{ backgroundColor:'#f9c056', width:"40%" }} size="small" />
+                        : <Chip label="Available" 
+                            sx={{ backgroundColor:'#6dbd75', width:"40%" }} size="small" />}
+                    </>
                 </Box>
-                <Grid container spacing={1} sx={{backgroundColor:'#f7f5f5', width:'100% !important'
+                <Grid container spacing={1} sx={{backgroundColor:{xs:'#f7f5f5', md:'#fff'}, width:'100% !important'
                         , borderBottomLeftRadius:16, borderBottomRightRadius:16, margin:0}}>
                     <Grid item xs={7} sx={{border:'0px solid red', padding:'0 !important',
                                             display:'flex', justifyContent:'flex-end', alignItems:'center'}}>
@@ -114,44 +124,6 @@ const CatalogItem = ({item}: Props) => {
                 </Grid>
             </Stack>
         </Stack>
-        {/* <Card sx={{ display: 'flex', minWidth:300, minHeight:200 }}>
-            <CardMedia
-            component="img"
-            sx={{ width: 151, margin:5 }}
-            image={item.img}
-            alt="Live from space album cover"
-            />
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="h5">
-                    {item.name}
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary" component="div">
-                    {item.description}
-                </Typography>
-            </CardContent>
-            
-            <Grid container spacing={2}>
-                <Grid item xs={8} sx={{border:'1px solid red'}}>
-                    {isItemInCart() && <CartCounter item={item} quantity={getCartItem()?.quantity!} />}
-                </Grid>
-                <Grid item xs={2} sx={{border:'1px solid red'}}>
-                    <Tooltip title="Shopping cart">
-                        <IconButton aria-label="shopping-cart"  onClick={() => handleCartClick(item.id)}>
-                            {isItemInCart() ? <ShoppingCartIcon color='success'/>  : <ShoppingCartOutlinedIcon/>}
-                        </IconButton>
-                    </Tooltip>
-                </Grid>
-                <Grid item xs={2} sx={{border:'1px solid red'}}>
-                    <Tooltip title="Favorites">
-                        <IconButton aria-label="favorite"  onClick={() => handleFavoriteClick(item.id)}>
-                            {wishlistIds.includes(item.id) ? <FavoriteOutlinedIcon color='error'/>  : <FavoriteBorderOutlinedIcon/>}
-                        </IconButton>
-                    </Tooltip>
-                </Grid>
-            </Grid>
-        </Box>
-        </Card> */}
     </Grid>
   )
 }

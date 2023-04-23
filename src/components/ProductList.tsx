@@ -37,7 +37,7 @@ const ProductList = ({title, products}:Props) => {
     }
     
   return (
-    <Container sx={{ padding:0 }}>
+    <Container sx={{ padding:'0 !important' }}>
         <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red'
                 , width:'fit-content', marginTop:2 }}>
             {products && products.length>0 
@@ -58,7 +58,7 @@ const ProductList = ({title, products}:Props) => {
             No items
         </Box>}
         <Grid container spacing={4} sx={{ border:0, padding:0, margin:0, width:'100%',
-                                        justifyContent:'center' }}>
+                                        justifyContent:{xs:'center',sm:'space-evenly'} }}>
             {filteredProducts && filteredProducts.map(product => <CatalogItem key={product.id} item={product} />)}
         </Grid>
     </Container>
