@@ -51,7 +51,7 @@ const Checkout = () => {
         <Grid container spacing={3}>
             {cartItems && cartItems.map(ci => {
               let product = products.find(p => p.id === ci.productId)!;
-              return <CartItem item={product} quantity={ci.quantity} />
+              return <CartItem key={product.id} item={product} quantity={ci.quantity} />
             })}
         </Grid>
         <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>

@@ -19,7 +19,11 @@ import Grid from '@mui/material/Grid';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import debounce from '@mui/material/utils/debounce';
+import { useAppDispatch } from '../state/hooks';
+import { setSearchCriteria } from '../state/searchSlice';
 
 const TopNavBar = styled('div')(({theme}) => ({
   position:'relative',
@@ -91,7 +95,15 @@ const gridItemStyle = {
 
 
 const Topbar = () => {
+  const [searchText, setSearchText] = useState('');
   const navigation = useNavigate();
+  const location = useLocation();
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    setSearchText('');
+    dispatch(setSearchCriteria({searchText:null}));
+  }, [location]);
 
   const handleFavoriteClick = () => {
     navigation('/wishlist');
@@ -99,6 +111,17 @@ const Topbar = () => {
 
   const handleCartClick = () => {
     navigation('/checkout');
+  }
+
+  const debouncedSearch = React.useRef(
+    debounce(async (criteria) => {
+      dispatch(setSearchCriteria({searchText:criteria}));
+    }, 300)
+  ).current;
+
+  const handleSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+    debouncedSearch(e.target.value);
   }
 
 
@@ -113,7 +136,7 @@ const Topbar = () => {
         </Grid>
         <Grid item xs={7} sx={gridItemStyle}>
           <Search>
-            <SearchInput placeholder='Search'/>
+            <SearchInput placeholder='Search' value={searchText} onChange={handleSearchTextChange}/>
             <SearchIconWrapper>
               <TuneIcon fontSize='large'/>
             </SearchIconWrapper>

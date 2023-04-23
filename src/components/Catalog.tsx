@@ -11,16 +11,29 @@ import Box from '@mui/material/Box';
 import ProductList from './ProductList';
 
 const Catalog = ({}) => {
-    const products = useAppSelector((state: RootState) => state.catalog.Products)
-    const dispatch = useAppDispatch()
+    const searchCriteria = useAppSelector((state: RootState) => state.search.searchText);
+    const products = useAppSelector((state: RootState) => state.catalog.Products);
+    const dispatch = useAppDispatch();
+    
+    let filteredProducts = products.filter(p => 
+      (searchCriteria === null || searchCriteria === undefined) 
+      || (p.name.toLowerCase().includes(searchCriteria) 
+          || p.description.toLowerCase().includes(searchCriteria)));
+    
   
     useEffect(() => {
       dispatch(fetchInventory());
     }, []);
+  
+    useEffect(() => {
+      if(Boolean(searchCriteria)){
+
+      }
+    }, [searchCriteria]);
     
     
   return (
-    <ProductList title="Trending" products={products} />
+    <ProductList title="Trending" products={filteredProducts} />
   )
 }
 

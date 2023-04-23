@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import wishlistReducer from '../state/wishlistSlice'
 import catalogReducer from '../state/catalogSlice'
 import cartReducer from '../state/cartSlice'
+import searchReducer from '../state/searchSlice'
 
 export const store = configureStore({
   reducer: {
     wishlist:wishlistReducer,
     catalog:catalogReducer,
-    cart:cartReducer
+    cart:cartReducer,
+    search:searchReducer
   },
 })
 

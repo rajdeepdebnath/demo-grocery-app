@@ -18,7 +18,7 @@ const ProductList = ({title, products}:Props) => {
     const [categoryFilter, setCategoryFilter] = useState<string|null>(null);
 
     useEffect(() => {
-        if(products && products.length>0){
+        if(products){
             setCategories([...new Set(products.map(p => capitalize(p.type)))]);
         }
     }, [products])
@@ -32,7 +32,6 @@ const ProductList = ({title, products}:Props) => {
     }, [products, categoryFilter]);
 
     const handleCatgoryFilterClick = (category:string) => {
-        console.log(category);
         let filter = category === categoryFilter ? null : category;
         setCategoryFilter(filter);        
     }
