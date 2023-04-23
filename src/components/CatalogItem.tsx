@@ -72,7 +72,7 @@ const CatalogItem = ({item}: Props) => {
     }
 
   return (
-    <Grid item lg={6} sm={6} md={6} xs={10} sx={{ paddingX:'0 !important' }}>
+    <Grid item lg={6} sm={5} md={6} xs={10} sx={{ paddingX:'0 !important' }}>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} 
             sx={{ minWidth:'200px', border:0, borderRadius: '16px', 
             justifyContent: 'center', alignItems: 'center',
