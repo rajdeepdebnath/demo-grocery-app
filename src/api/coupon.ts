@@ -1,3 +1,3 @@
 export const getCoupons = () => {
-    return ['BOGO-BANANA', 'B2G1-DRINKS'];
+    return [{type:'drinks',coupon:'BOGO'}, {type:'fruit',coupon:'B2G1'}];
 }

@@ -34,7 +34,7 @@ const Checkout = () => {
 
   const handleCouponApply = () => {
     let coupons = getCoupons();
-    setCouponValid(coupons.includes(coupon));
+    setCouponValid(coupons.map(c => c.coupon).includes(coupon));
   }
   
   return (
