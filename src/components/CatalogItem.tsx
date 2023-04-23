@@ -15,6 +15,28 @@ import { addToWishlist, removeFromWishlist } from '../state/wishlistSlice';
 import { RootState } from '../state/store';
 import { addToCart, removeFromCart } from '../state/cartSlice';
 import TextField from '@mui/material/TextField';
+import CartCounter from './CartCounter';
+import Tooltip from '@mui/material/Tooltip';
+import Stack from '@mui/material/Stack';
+import styled from '@emotion/styled';
+
+const itemStyle = { 
+    display: 'flex', 
+    flexDirection: 'column', 
+    width:'100%', 
+    height:150, 
+    overflow:'hidden', 
+    textOverflow:'ellipsis',
+    padding:{xs:1,md:0}
+}
+
+const descriptionStyle = {
+    fontSize:{xs:14,md:18}, 
+    lineHeight:{xs:1.2,md:2}, 
+    marginY:1,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+};
 
 interface Props {
     item:Product
@@ -25,8 +47,12 @@ const CatalogItem = ({item}: Props) => {
     const cartItems = useAppSelector((state: RootState) => state.cart.cartItems);
     const dispatch = useAppDispatch()
     
+    const getCartItem = () => {
+        return cartItems.find(ci => ci.productId === item.id);
+    }
+    
     const isItemInCart = () => {
-        return cartItems.length>0 && Boolean(cartItems.find(ci => ci.productId === item.id));
+        return cartItems.length>0 && Boolean(getCartItem());
     }
     
     const handleFavoriteClick = (id:number) => {
@@ -44,10 +70,51 @@ const CatalogItem = ({item}: Props) => {
             dispatch(addToCart({productId:id, quantity:1}));
         }
     }
-    
+
   return (
-    <Grid item lg={6} sm={6} md={6} xs={10}>
-        <Card sx={{ display: 'flex', minWidth:300, minHeight:200 }}>
+    <Grid item lg={6} sm={6} md={6} xs={10} sx={{ paddingX:'0 !important' }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} 
+            sx={{ minWidth:'200px', border:0, borderRadius: '16px', 
+            justifyContent: 'center', alignItems: 'center',
+            boxShadow:5, padding:'0 !important' }}>
+            <Box component="img" 
+                sx={{ height: 150, width:{sm: 150, xs:'100%'}, borderRadius: '16px'}}
+                alt={item.name} src={item.img} />
+            <Stack direction='column' sx={{width:'100%'}}>
+                <Box sx={itemStyle}>
+                    <Typography component="div" variant="h5" sx={{fontSize:{xs:17,md:20}}}>
+                        {item.name}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.secondary" 
+                         sx={descriptionStyle}
+                        component="div">
+                        {item.description}
+                    </Typography>
+                </Box>
+                <Grid container spacing={1} sx={{backgroundColor:'#f7f5f5', width:'100% !important'
+                        , borderBottomLeftRadius:16, borderBottomRightRadius:16, margin:0}}>
+                    <Grid item xs={7} sx={{border:'0px solid red', padding:'0 !important',
+                                            display:'flex', justifyContent:'flex-end', alignItems:'center'}}>
+                        {isItemInCart() && <CartCounter item={item} quantity={getCartItem()?.quantity!} />}
+                    </Grid>
+                    <Grid item xs={2} sx={{border:'0px solid red', padding:'0 !important'}}>
+                        <Tooltip title="Shopping cart">
+                            <IconButton aria-label="shopping-cart"  onClick={() => handleCartClick(item.id)}>
+                                {isItemInCart() ? <ShoppingCartIcon color='success'/>  : <ShoppingCartOutlinedIcon/>}
+                            </IconButton>
+                        </Tooltip>
+                    </Grid>
+                    <Grid item xs={3} sx={{border:'0px solid red', padding:'0 !important'}}>
+                        <Tooltip title="Favorites">
+                            <IconButton aria-label="favorite"  onClick={() => handleFavoriteClick(item.id)}>
+                                {wishlistIds.includes(item.id) ? <FavoriteOutlinedIcon color='error'/>  : <FavoriteBorderOutlinedIcon/>}
+                            </IconButton>
+                        </Tooltip>
+                    </Grid>
+                </Grid>
+            </Stack>
+        </Stack>
+        {/* <Card sx={{ display: 'flex', minWidth:300, minHeight:200 }}>
             <CardMedia
             component="img"
             sx={{ width: 151, margin:5 }}
@@ -63,17 +130,28 @@ const CatalogItem = ({item}: Props) => {
                     {item.description}
                 </Typography>
             </CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                {isItemInCart() && <TextField type="number" inputProps={{ min: 1, max: 10 }} />}
-                <IconButton aria-label="shopping-cart"  onClick={() => handleCartClick(item.id)}>
-                    {isItemInCart() ? <ShoppingCartIcon color='success'/>  : <ShoppingCartOutlinedIcon/>}
-                </IconButton>
-                <IconButton aria-label="favorite"  onClick={() => handleFavoriteClick(item.id)}>
-                    {wishlistIds.includes(item.id) ? <FavoriteOutlinedIcon color='error'/>  : <FavoriteBorderOutlinedIcon/>}
-                </IconButton>
-            </Box>
+            
+            <Grid container spacing={2}>
+                <Grid item xs={8} sx={{border:'1px solid red'}}>
+                    {isItemInCart() && <CartCounter item={item} quantity={getCartItem()?.quantity!} />}
+                </Grid>
+                <Grid item xs={2} sx={{border:'1px solid red'}}>
+                    <Tooltip title="Shopping cart">
+                        <IconButton aria-label="shopping-cart"  onClick={() => handleCartClick(item.id)}>
+                            {isItemInCart() ? <ShoppingCartIcon color='success'/>  : <ShoppingCartOutlinedIcon/>}
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+                <Grid item xs={2} sx={{border:'1px solid red'}}>
+                    <Tooltip title="Favorites">
+                        <IconButton aria-label="favorite"  onClick={() => handleFavoriteClick(item.id)}>
+                            {wishlistIds.includes(item.id) ? <FavoriteOutlinedIcon color='error'/>  : <FavoriteBorderOutlinedIcon/>}
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+            </Grid>
         </Box>
-        </Card>
+        </Card> */}
     </Grid>
   )
 }

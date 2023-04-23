@@ -13,7 +13,7 @@ import Checkout from './pages/Checkout';
 import Wishlist from './pages/Wishlist';
 import Topbar from './components/Topbar';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import Nomatch from './pages/Nomatch';
 import { ErrorBoundary } from "react-error-boundary";
 declare module '@mui/material/styles' {
@@ -31,11 +31,12 @@ declare module '@mui/material/styles' {
 }
 
 
-const theme = createTheme({
+let theme = createTheme({
   searchBox: {
     borderRadius: 20,
   }
 });
+theme = responsiveFontSizes(theme);
 
 function App() {
   const [count, setCount] = useState(0);

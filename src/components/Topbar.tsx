@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, Theme, useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -19,6 +19,7 @@ import Grid from '@mui/material/Grid';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import HomeIcon from '@mui/icons-material/Home';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import debounce from '@mui/material/utils/debounce';
@@ -27,6 +28,8 @@ import { setSearchCriteria } from '../state/searchSlice';
 import { RootState } from '../state/store';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Tooltip from '@mui/material/Tooltip';
+import { useMediaQuery } from '@mui/material';
 
 const TopNavBar = styled('div')(({theme}) => ({
   position:'relative',
@@ -38,6 +41,9 @@ const TopNavBar = styled('div')(({theme}) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  [theme.breakpoints.down('md')]: {
+    height:130,
+  }
 }));
 
 const Search = styled('div')(({ theme }) => ({
@@ -55,7 +61,7 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft:'5%',
   marginRight:'5%',
   [theme.breakpoints.up('sm')]: {
-    width: '90%',
+    width: '90%'
   },
 }));
 
@@ -73,6 +79,9 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
   border: '0px solid yellow',
   '::placeholder':{
     color:'#d3d3d3'
+  },
+  [theme.breakpoints.down('md')]: {
+    height:40,
   }
 }));
 
@@ -86,6 +95,14 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   border: '0px solid red',
 }));
 
+const GridContainer = styled('div')(({ theme }) => ({
+  display:'flex',
+  flexDirection:'row',
+  [theme.breakpoints.down('md')]: {
+    flexDirection:'column',
+  },
+}));
+
 
 const gridItemStyle = {
   border:'0px solid red',
@@ -94,6 +111,7 @@ const gridItemStyle = {
   alignItems: 'center',
   paddingLeft:'0 !important',
   paddingTop:'0 !important',
+  marginTop:{xs:1,md:0}
 }
 
 
@@ -118,6 +136,10 @@ const Topbar = () => {
     navigation('/checkout');
   }
 
+  const handleHomeClick = () => {
+    navigation('/');
+  }
+
   const debouncedSearch = React.useRef(
     debounce(async (criteria) => {
       dispatch(setSearchCriteria({searchText:criteria}));
@@ -132,14 +154,16 @@ const Topbar = () => {
 
   return (
     <TopNavBar>
-      <Grid container spacing={2}>
-        <Grid item xs={2} sx={gridItemStyle}>
-          <Typography component="h2" 
-          sx={{ fontFamily:'Arial', fontWeight:'bold' }}>
-            <Link to='/' style={{textDecoration:'none', color:'#545454'}}>GROCERIES</Link>
-          </Typography>
+      <Grid container spacing={2} sx={{ flexDirection: { xs: 'column', md: 'row' } }}>
+        <Grid item xs={12} md={2} sx={gridItemStyle}>
+            <Tooltip title="Click to Home">
+              <Typography component="h2" 
+              sx={{ fontFamily:'Arial', fontWeight:'bold', marginTop:{xs:2, md:0} }}>
+                <Link to='/' style={{textDecoration:'none', color:'#545454'}}>GROCERIES</Link>
+              </Typography>
+          </Tooltip>
         </Grid>
-        <Grid item xs={7} sx={gridItemStyle}>
+        <Grid item xs={12} md={7} sx={gridItemStyle}>
           <Search>
             <SearchInput placeholder='Search' value={searchText} onChange={handleSearchTextChange}/>
             <SearchIconWrapper>
@@ -147,27 +171,38 @@ const Topbar = () => {
             </SearchIconWrapper>
           </Search>
         </Grid>
-        <Grid item xs={3} sx={gridItemStyle}>
-          <Box sx={{ border:'0px solid red', width:'100%', 
-          display:'flex', justifyContent:'space-evenly' }}>
-            <IconButton aria-label="cart"  onClick={handleCartClick}>
-              {cartItems.length > 0
-                ? <Badge badgeContent={cartItems.length} color="primary">
-                    <ShoppingCartIcon color='success' fontSize='large' />
-                  </Badge>
-              : <ShoppingCartOutlinedIcon fontSize='large' />}
-              
-            </IconButton>
-            <IconButton aria-label="profile"  onClick={() => null}>
-              <AccountCircleRoundedIcon fontSize='large' />
-            </IconButton>
-            <IconButton aria-label="favorite"  onClick={handleFavoriteClick}>
-              {wishlistIds.length > 0
-                ? <Badge badgeContent={wishlistIds.length} color="primary">
-                    <FavoriteOutlinedIcon color='error' fontSize='large' />
-                  </Badge>
-              : <FavoriteBorderOutlinedIcon fontSize='large' />}
-            </IconButton>
+        <Grid item md={3} sx={gridItemStyle}>
+          <Box sx={{ border:'0px solid red', width:'100%', marginY:{xs:2, md:0}, 
+              display:'flex', justifyContent:'space-evenly' }}>
+            <Tooltip title="Home" sx={{ display:{md:'none'} }}>
+              <IconButton aria-label="home"  onClick={handleHomeClick}>
+                <HomeIcon fontSize='medium' />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Shopping cart">
+              <IconButton aria-label="cart"  onClick={handleCartClick}>
+                {cartItems.length > 0
+                  ? <Badge badgeContent={cartItems.length} color="primary">
+                      <ShoppingCartIcon color='success' fontSize='medium' />
+                    </Badge>
+                : <ShoppingCartOutlinedIcon fontSize='medium' />}
+                
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Profile">
+              <IconButton aria-label="profile"  onClick={() => null}>
+                <AccountCircleRoundedIcon color="primary" fontSize='medium' />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Favorites">
+              <IconButton aria-label="favorite"  onClick={handleFavoriteClick}>
+                {wishlistIds.length > 0
+                  ? <Badge badgeContent={wishlistIds.length} color="primary">
+                      <FavoriteOutlinedIcon color='error' fontSize='medium' />
+                    </Badge>
+                : <FavoriteBorderOutlinedIcon fontSize='medium' />}
+              </IconButton>
+            </Tooltip>
           </Box>
         </Grid>
       </Grid>

@@ -15,6 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { addToWishlist, removeFromWishlist } from '../state/wishlistSlice';
 import { RootState } from '../state/store';
 import { addToCart, removeFromCart } from '../state/cartSlice';
+import CartCounter from '../components/CartCounter';
 
 interface Props {
     item:Product,
@@ -46,7 +47,7 @@ const CartItem = ({item,quantity}: Props) => {
             </CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                 <div>{item.price}</div>&nbsp;
-                <div>{quantity}</div>
+                <CartCounter item={item} quantity={quantity} />
                 <IconButton aria-label="favorite"  onClick={() => handleDelete(item.id)}>
                     <DeleteIcon/>
                 </IconButton>

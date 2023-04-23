@@ -37,8 +37,9 @@ const ProductList = ({title, products}:Props) => {
     }
     
   return (
-    <Container>
-        <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
+    <Container sx={{ padding:0 }}>
+        <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red'
+                , width:'fit-content', marginTop:2 }}>
             {products && products.length>0 
             && <CategoryFilter handleCatgoryFilterClick={handleCatgoryFilterClick} 
             currentCategoryFilter={categoryFilter}
@@ -48,14 +49,16 @@ const ProductList = ({title, products}:Props) => {
             currentCategoryFilter={categoryFilter}
             label={c} />)}
         </Box>
-        <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
+        <Box sx={{ marginBottom:{xs:1,md:5}, display:'flex', marginX:{xs:1},
+                border:'0px solid red', width:'fit-content' }}>
             {title}
         </Box>
         {filteredProducts && filteredProducts.length===0 && 
         <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
             No items
         </Box>}
-        <Grid container spacing={3}>
+        <Grid container spacing={4} sx={{ border:0, padding:0, margin:0, width:'100%',
+                                        justifyContent:'center' }}>
             {filteredProducts && filteredProducts.map(product => <CatalogItem key={product.id} item={product} />)}
         </Grid>
     </Container>
