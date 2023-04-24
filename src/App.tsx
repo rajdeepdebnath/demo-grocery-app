@@ -7,12 +7,12 @@ import {
 import { store } from './state/store'
 import { Provider } from 'react-redux'
 import './App.css'
+import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import Home from './pages/Home';
 import Checkout from './pages/Checkout';
 import Wishlist from './pages/Wishlist';
 import Topbar from './components/Topbar';
-import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import Nomatch from './pages/Nomatch';
 import { ErrorBoundary } from "react-error-boundary";

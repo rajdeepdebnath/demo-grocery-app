@@ -6,15 +6,23 @@ import { RootState } from "../state/store"
 import CartItem from "./CartItem"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
-import { getCoupons } from "../api/coupon"
-import { useState } from "react"
+import { checkCouponValid, getCoupons } from "../api/coupon"
+import { useEffect, useState } from "react"
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Paper, Stack } from "@mui/material"
+
+interface ProductCoupon{
+  productId:number,
+  coupon:string
+}
 
 const Checkout = () => {
   const products = useAppSelector((state: RootState) => state.catalog.Products)
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
-  const [coupon, setCoupon] = useState('');
+  const [couponTxt, setCouponTxt] = useState('');
+  const [productCoupons, setProductCoupons] = useState<ProductCoupon[]>([]);
+  const [total, setTotal] = useState(0);
   const [couponValid, setCouponValid] = useState<boolean|null>(null);
 
   const getProductPrice = (priceStr:string) => {
@@ -23,19 +31,43 @@ const Checkout = () => {
 
   const calculateTotal = () => {
     let total = 0;
-    products.forEach((product) => {
-      let productInCart = cartItems.find(ci => ci.productId === product.id);
-      if(Boolean(productInCart) && productInCart != undefined){        
-        total += getProductPrice(product.price) * productInCart.quantity;
+    cartItems.forEach(ci => {
+      let product = products.find(p => ci.productId === p.id);
+      if(product){
+        let coupon = productCoupons.find(pc => pc.productId === product?.id);
+        if(coupon){
+          let freeCount = checkCouponValid(product.type, ci.quantity);   
+          if(freeCount){
+            total += getProductPrice(product.price) * (ci.quantity - freeCount);
+          }
+        }else{
+          total += getProductPrice(product.price) * ci.quantity;
+        }
+
       }
     });
+    
     return total;
   }
 
   const handleCouponApply = () => {
     let coupons = getCoupons();
-    setCouponValid(coupons.map(c => c.coupon).includes(coupon));
+    setCouponValid(coupons.map(c => c.coupon).includes(couponTxt));
   }
+
+  const handleProductCoupon = (id:number, c:string, type:string) => {
+    let existingCoupon = productCoupons.find(pc => pc.productId === id);
+    if(existingCoupon === undefined && type === 'add'){
+      setProductCoupons(p => [...p, {productId:id,coupon:c}])
+    }else if(type === 'remove'){
+      setProductCoupons(pc => pc.filter(p => p.productId !== id));
+    }
+  }
+
+  useEffect(() => {
+    let newTotal = calculateTotal();
+    setTotal(newTotal);
+  }, [cartItems, productCoupons]);
   
   return (
     <Container>
@@ -48,25 +80,42 @@ const Checkout = () => {
         <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
             No items
         </Box>}
-        <Grid container spacing={3}>
-            {cartItems && cartItems.map(ci => {
-              let product = products.find(p => p.id === ci.productId)!;
-              return <CartItem key={product.id} item={product} quantity={ci.quantity} />
-            })}
-        </Grid>
-        <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
-          {cartItems && cartItems.length!==0 && <>Promotion (Enter Coupon code): 
-          <input type="text" name="promotion" placeholder="Coupon" value={coupon} 
-            onChange={e => setCoupon(e.target.value)}/>
-            {couponValid !== null && (couponValid ? <CheckBoxIcon color="success" /> : <CancelIcon color="error" />)}
-          <Button variant="outlined" onClick={handleCouponApply}>Apply</Button></>}
-        </Box>
-        {cartItems && cartItems.length!==0 && 
-        <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
-          <Typography component="div" variant="h5">
-            Total: £{calculateTotal()}
-          </Typography>
-        </Box>}
+        <Grid container spacing={5}>
+          <Grid item md={7} xs={12}>
+            <Stack direction="column" spacing={1}>
+              {cartItems && cartItems.map(ci => {
+                  let product = products.find(p => p.id === ci.productId)!;
+                  return <CartItem key={product.id} item={product} 
+                  quantity={ci.quantity} 
+                  handleProductCoupon={(c,t) => handleProductCoupon(product.id,c,t)} />
+                })}
+            </Stack>
+          </Grid>
+          <Grid item md={5} xs={12}>
+            <Stack direction='column' sx={{boxShadow:2, padding:3}}>
+              {cartItems && cartItems.length!==0 && 
+              <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
+                <Typography component="div" variant="h5">
+                  Total: £{total}
+                </Typography>
+              </Box>}
+              {/* <Box sx={{ marginBottom:5, display:'flex', border:'0px solid red', width:'fit-content' }}>
+                {cartItems && cartItems.length!==0 && <>Promotion (Enter Coupon code): 
+                <input type="text" name="promotion" placeholder="Coupon" value={couponTxt} 
+                  onChange={e => setCouponTxt(e.target.value)}/>
+                  {couponValid !== null && (couponValid ? <CheckBoxIcon color="success" /> : <CancelIcon color="error" />)}
+                <Button variant="outlined" onClick={handleCouponApply}>Apply</Button></>}
+              </Box> */}
+              <Stack direction="column" spacing={1}>
+                {productCoupons && productCoupons.length>0 && 
+                productCoupons.map(pc => 
+                  <Paper key={pc.productId} sx={{ backgroundColor:'#e8e9e8', fontSize:12, paddingX:1 }} elevation={0}>
+                      Coupon {pc.coupon} for {products.find(p => p.id===pc.productId)?.name} Applied
+                  </Paper>)}
+              </Stack>
+            </Stack>
+          </Grid>
+        </Grid>        
     </Container>
   )
 }
