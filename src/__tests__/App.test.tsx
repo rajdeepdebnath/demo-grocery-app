@@ -1,5 +1,8 @@
-test("that jest is working", () => {
-    expect(true).toBe(true);
-  });
+import { render, screen } from '@testing-library/react';
+import App from '../App';
 
-  export {}
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/groceries/i)
+  expect(linkElement).toBeInTheDocument();
+});
