@@ -31,7 +31,3 @@ export const checkCouponValid = (type: string, quantity: number) => {
 
   return false;
 };
-
-export const testCoupon = () => {
-  return { a: 1, b: 2 };
-};

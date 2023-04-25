@@ -12,6 +12,7 @@
 6. Jest (testing library)
 7. es-lint
 8. Prettier
+9. husky
 
 ### Features
 
