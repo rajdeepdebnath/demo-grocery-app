@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "ts-jest": "ts-jest config:init",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
