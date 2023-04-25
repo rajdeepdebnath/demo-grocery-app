@@ -10,6 +10,8 @@
 4. Material ui
 5. Typescript
 6. Jest (testing library)
+7. es-lint
+8. Prettier
 
 ### Features
 
