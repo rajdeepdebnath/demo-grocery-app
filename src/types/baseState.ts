@@ -1,4 +1,4 @@
-export interface BaseState{
-    loading: boolean;
-    error:string | undefined | null;
+export interface BaseState {
+  loading: boolean;
+  error: string | undefined | null;
 }

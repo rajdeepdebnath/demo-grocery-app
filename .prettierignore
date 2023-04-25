@@ -1,5 +1,3 @@
 node_modules/
 dist/
 .prettierrc.cjs
-.eslintrc.cjs
-env.d.ts

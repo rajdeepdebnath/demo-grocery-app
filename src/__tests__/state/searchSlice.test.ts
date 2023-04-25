@@ -1,31 +1,38 @@
-import searchReducer, { setSearchCriteria, clearSearch, SearchState } from '../../state/searchSlice'
+import searchReducer, {
+  setSearchCriteria,
+  clearSearch,
+  SearchState,
+} from "../../state/searchSlice";
 
-test('should handle adding search criteria', () => {
+test("should handle adding search criteria", () => {
   //Arrange
   const previousState: SearchState = {
     searchText: null,
-    loading:false,
-    error:null
-  }
+    loading: false,
+    error: null,
+  };
 
   //Act
-  const result = searchReducer(previousState, setSearchCriteria({ searchText:'abcd' }));
+  const result = searchReducer(
+    previousState,
+    setSearchCriteria({ searchText: "abcd" })
+  );
 
   //Assert
-  expect(result).toEqual({"error": null, "loading": false, "searchText": "abcd"})
-})
+  expect(result).toEqual({ error: null, loading: false, searchText: "abcd" });
+});
 
-test('should handle clearing search criteria', () => {
+test("should handle clearing search criteria", () => {
   //Arrange
   const previousState: SearchState = {
     searchText: null,
-    loading:false,
-    error:null
-  }
+    loading: false,
+    error: null,
+  };
 
   //Act
   const result = searchReducer(previousState, clearSearch());
 
   //Assert
-  expect(result).toEqual({"error": null, "loading": false, "searchText": null})
-})
+  expect(result).toEqual({ error: null, loading: false, searchText: null });
+});

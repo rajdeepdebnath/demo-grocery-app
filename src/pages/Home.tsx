@@ -1,9 +1,7 @@
-import Catalog from '../components/Catalog';
+import Catalog from "../components/Catalog";
 
 const Home = () => {
-  return (
-    <Catalog />
-  )
-}
+  return <Catalog />;
+};
 
-export default Home
+export default Home;

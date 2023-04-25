@@ -1,24 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { BaseState } from '../types/baseState'
-
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { BaseState } from "../types/baseState";
 
 export interface SearchState extends BaseState {
-    searchText: string|null|undefined
+  searchText: string | null | undefined;
 }
 
 export interface SearchPayload {
-    searchText:string|null|undefined
+  searchText: string | null | undefined;
 }
 
 const initialState: SearchState = {
   searchText: null,
-  loading:false,
-  error:null
-}
+  loading: false,
+  error: null,
+};
 
 export const searchSlice = createSlice({
-  name: 'search',
+  name: "search",
   initialState,
   reducers: {
     setSearchCriteria: (state, action: PayloadAction<SearchPayload>) => {
@@ -28,9 +27,9 @@ export const searchSlice = createSlice({
       state.searchText = null;
     },
   },
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { setSearchCriteria, clearSearch } = searchSlice.actions
+export const { setSearchCriteria, clearSearch } = searchSlice.actions;
 
-export default searchSlice.reducer
+export default searchSlice.reducer;
