@@ -27,7 +27,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartPayload>) => {
-        let existingItem = state.cartItems.find(ci => ci.productId === action.payload.productId);
+        const existingItem = state.cartItems.find(ci => ci.productId === action.payload.productId);
         if(existingItem){
             existingItem.quantity = action.payload.quantity;
         }else{
@@ -35,7 +35,7 @@ export const cartSlice = createSlice({
         }
     },
     removeFromCart: (state, action: PayloadAction<CartPayload>) => {
-        let idx = state.cartItems.findIndex(i => i.productId === action.payload.productId);
+        const idx = state.cartItems.findIndex(i => i.productId === action.payload.productId);
         if(idx>-1){
             state.cartItems.splice(idx,1);
         }

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
 import { Product } from '../types/product'
 import { fecthInventoryApi } from '../api/inventoryAPI'
 import { BaseState } from '../types/baseState'
@@ -22,22 +21,22 @@ export const catalogSlice = createSlice({
   name: 'Catalog',
   initialState,
   reducers: {
-    addToCatalog: (state, action: PayloadAction<CatalogPayload>) => {
-        //state.Products.push(action.payload.productId);
-    },
-    removeFromCatalog: (state, action: PayloadAction<CatalogPayload>) => {
-        // let idx = state.CatalogProductIds.findIndex(i => i === action.payload.productId);
-        // if(idx>-1){
-        //     state.CatalogProductIds.splice(idx,1);
-        // }
-    },
+    // addToCatalog: (state, action: PayloadAction<CatalogPayload>) => {
+    //     state.Products.push(action.payload.productId);
+    // },
+    // removeFromCatalog: (state, action: PayloadAction<CatalogPayload>) => {
+    //     let idx = state.CatalogProductIds.findIndex(i => i === action.payload.productId);
+    //     if(idx>-1){
+    //         state.CatalogProductIds.splice(idx,1);
+    //     }
+    // },
     clearCatalog: (state) => {
         state.Products = [];
     },
   },
   extraReducers: (builder) => {
     builder
-    .addCase(fetchInventory.pending, (state, action) => {
+    .addCase(fetchInventory.pending, (state) => {
         state.loading = true;
     })
     .addCase(fetchInventory.fulfilled, (state, action) => {
@@ -58,6 +57,6 @@ export const fetchInventory = createAsyncThunk("catalogue/fetchInventory", async
 })
 
 // Action creators are generated for each case reducer function
-export const { addToCatalog, removeFromCatalog, clearCatalog } = catalogSlice.actions
+export const { clearCatalog } = catalogSlice.actions
 
 export default catalogSlice.reducer

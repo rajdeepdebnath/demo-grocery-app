@@ -11,7 +11,7 @@ export const getCoupons = ():Coupon[] => {
 }
 
 export const checkCouponValid = (type:string,quantity:number) => {    
-    let coupon = getCoupons().find(c => c.type === type);
+    const coupon = getCoupons().find(c => c.type === type);
 
     if(coupon === undefined){
         return false;

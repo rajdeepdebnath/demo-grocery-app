@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import App from '../App';
-import Topbar from '../components/Topbar';
 
 test('renders HOME page with GROCERIES text', () => {
   render(<App />);

@@ -1,7 +1,4 @@
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { Product } from '../types/product';
@@ -14,11 +11,9 @@ import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { addToWishlist, removeFromWishlist } from '../state/wishlistSlice';
 import { RootState } from '../state/store';
 import { addToCart, removeFromCart } from '../state/cartSlice';
-import TextField from '@mui/material/TextField';
 import CartCounter from './CartCounter';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
-import styled from '@emotion/styled';
 import Chip from '@mui/material/Chip';
 import { getCoupons } from '../api/coupon';
 import { useState } from 'react';
@@ -48,12 +43,16 @@ interface Props {
 const CatalogItem = ({item}: Props) => {
     const wishlistIds = useAppSelector((state: RootState) => state.wishlist.wishlistProductIds);
     const cartItems = useAppSelector((state: RootState) => state.cart.cartItems);
-    const [coupon, setCoupon] = useState(getCoupons().find(c => c.type === item.type));
+    const [coupon] = useState(getCoupons().find(c => c.type === item.type));
     const dispatch = useAppDispatch()
     
     
     const getCartItem = () => {
         return cartItems.find(ci => ci.productId === item.id);
+    }
+    const getCartItemQuantity = () => {
+        const cartItem = getCartItem();
+        return cartItem ? cartItem.quantity : 0;
     }
     
     const isItemInCart = () => {
@@ -121,7 +120,7 @@ const CatalogItem = ({item}: Props) => {
                     </Grid>
                     <Grid item xs={4} sx={{border:0, padding:'0 !important',
                                             display:'flex', justifyContent:'flex-end', alignItems:'center'}}>
-                        {isItemInCart() && <CartCounter item={item} quantity={getCartItem()?.quantity!} />}
+                        {isItemInCart() && <CartCounter item={item} quantity={getCartItemQuantity()} />}
                     </Grid>
                     <Grid item xs={2} sx={{border:0, padding:'0 !important'}}>
                         <Tooltip title="Shopping cart">

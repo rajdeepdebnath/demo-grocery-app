@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   BrowserRouter,
   Routes,
@@ -8,7 +7,6 @@ import { store } from './state/store'
 import { Provider } from 'react-redux'
 import './App.css'
 import CssBaseline from '@mui/material/CssBaseline';
-import Button from '@mui/material/Button';
 import Home from './pages/Home';
 import Checkout from './pages/Checkout';
 import Wishlist from './pages/Wishlist';
@@ -39,8 +37,6 @@ let theme = createTheme({
 theme = responsiveFontSizes(theme);
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <ErrorBoundary fallback={<div>Something went wrong!</div>}>
       <Provider store={store}>

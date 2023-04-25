@@ -1,20 +1,11 @@
 import * as React from 'react';
-import { styled, alpha, Theme, useTheme } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
+import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import TuneIcon from '@mui/icons-material/Tune';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import Grid from '@mui/material/Grid';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -29,7 +20,6 @@ import { RootState } from '../state/store';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Tooltip from '@mui/material/Tooltip';
-import { useMediaQuery } from '@mui/material';
 
 const TopNavBar = styled('div')(({theme}) => ({
   position:'relative',
@@ -93,14 +83,6 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   border: '0px solid red',
-}));
-
-const GridContainer = styled('div')(({ theme }) => ({
-  display:'flex',
-  flexDirection:'row',
-  [theme.breakpoints.down('md')]: {
-    flexDirection:'column',
-  },
 }));
 
 

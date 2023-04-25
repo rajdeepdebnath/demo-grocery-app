@@ -32,7 +32,7 @@ const ProductList = ({title, products}:Props) => {
     }, [products, categoryFilter]);
 
     const handleCatgoryFilterClick = (category:string) => {
-        let filter = category === categoryFilter ? null : category;
+        const filter = category === categoryFilter ? null : category;
         setCategoryFilter(filter);        
     }
     

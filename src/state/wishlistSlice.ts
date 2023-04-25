@@ -24,7 +24,7 @@ export const wishlistSlice = createSlice({
         state.wishlistProductIds.push(action.payload.productId);
     },
     removeFromWishlist: (state, action: PayloadAction<WishListPayload>) => {
-        let idx = state.wishlistProductIds.findIndex(i => i === action.payload.productId);
+        const idx = state.wishlistProductIds.findIndex(i => i === action.payload.productId);
         if(idx>-1){
             state.wishlistProductIds.splice(idx,1);
         }

@@ -9,7 +9,7 @@ test('should handle adding search criteria', () => {
   }
 
   //Act
-  let result = searchReducer(previousState, setSearchCriteria({ searchText:'abcd' }));
+  const result = searchReducer(previousState, setSearchCriteria({ searchText:'abcd' }));
 
   //Assert
   expect(result).toEqual({"error": null, "loading": false, "searchText": "abcd"})
@@ -24,7 +24,7 @@ test('should handle clearing search criteria', () => {
   }
 
   //Act
-  let result = searchReducer(previousState, clearSearch());
+  const result = searchReducer(previousState, clearSearch());
 
   //Assert
   expect(result).toEqual({"error": null, "loading": false, "searchText": null})

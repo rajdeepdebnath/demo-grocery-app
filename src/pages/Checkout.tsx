@@ -5,11 +5,8 @@ import { useAppSelector } from "../state/hooks"
 import { RootState } from "../state/store"
 import CartItem from "./CartItem"
 import Typography from "@mui/material/Typography"
-import Button from "@mui/material/Button"
-import { checkCouponValid, getCoupons } from "../api/coupon"
+import { checkCouponValid } from "../api/coupon"
 import { useEffect, useState } from "react"
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { Paper, Stack } from "@mui/material"
 
 interface ProductCoupon{
@@ -20,10 +17,9 @@ interface ProductCoupon{
 const Checkout = () => {
   const products = useAppSelector((state: RootState) => state.catalog.Products)
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
-  const [couponTxt, setCouponTxt] = useState('');
+  // const [couponTxt, setCouponTxt] = useState('');
   const [productCoupons, setProductCoupons] = useState<ProductCoupon[]>([]);
   const [total, setTotal] = useState(0);
-  const [couponValid, setCouponValid] = useState<boolean|null>(null);
 
   const getProductPrice = (priceStr:string) => {
     return Number(priceStr.replace('£', ''));
@@ -32,11 +28,11 @@ const Checkout = () => {
   const calculateTotal = () => {
     let total = 0;
     cartItems.forEach(ci => {
-      let product = products.find(p => ci.productId === p.id);
+      const product = products.find(p => ci.productId === p.id);
       if(product){
-        let coupon = productCoupons.find(pc => pc.productId === product?.id);
+        const coupon = productCoupons.find(pc => pc.productId === product?.id);
         if(coupon){
-          let freeCount = checkCouponValid(product.type, ci.quantity);   
+          const freeCount = checkCouponValid(product.type, ci.quantity);   
           if(freeCount){
             total += getProductPrice(product.price) * (ci.quantity - freeCount);
           }
@@ -50,13 +46,8 @@ const Checkout = () => {
     return total;
   }
 
-  const handleCouponApply = () => {
-    let coupons = getCoupons();
-    setCouponValid(coupons.map(c => c.coupon).includes(couponTxt));
-  }
-
   const handleProductCoupon = (id:number, c:string, type:string) => {
-    let existingCoupon = productCoupons.find(pc => pc.productId === id);
+    const existingCoupon = productCoupons.find(pc => pc.productId === id);
     if(existingCoupon === undefined && type === 'add'){
       setProductCoupons(p => [...p, {productId:id,coupon:c}])
     }else if(type === 'remove'){
@@ -65,7 +56,7 @@ const Checkout = () => {
   }
 
   useEffect(() => {
-    let newTotal = calculateTotal();
+    const newTotal = calculateTotal();
     setTotal(newTotal);
   }, [cartItems, productCoupons]);
   
@@ -83,9 +74,9 @@ const Checkout = () => {
         <Grid container spacing={5}>
           <Grid item md={7} xs={12}>
             <Stack direction="column" spacing={1}>
-              {cartItems && cartItems.map(ci => {
-                  let product = products.find(p => p.id === ci.productId)!;
-                  return <CartItem key={product.id} item={product} 
+              {cartItems && products && cartItems.map(ci => {
+                  const product = products.find(p => p.id === ci.productId);
+                  return product && <CartItem key={product.id} item={product} 
                   quantity={ci.quantity} 
                   handleProductCoupon={(c,t) => handleProductCoupon(product.id,c,t)} />
                 })}
