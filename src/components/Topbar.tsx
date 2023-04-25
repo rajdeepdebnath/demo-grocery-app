@@ -22,7 +22,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import HomeIcon from '@mui/icons-material/Home';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import debounce from '@mui/material/utils/debounce';
+import {debounce} from '@mui/material/utils';
 import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { setSearchCriteria } from '../state/searchSlice';
 import { RootState } from '../state/store';

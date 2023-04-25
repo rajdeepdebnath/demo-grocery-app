@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid"
 import CatalogItem from "./CatalogItem"
 import { Product } from "../types/product"
 import { useEffect, useState } from "react"
-import capitalize from "@mui/material/utils/capitalize"
+import {capitalize} from "@mui/material/utils"
 
 interface Props{
     products: Product[],
