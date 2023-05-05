@@ -12,7 +12,7 @@
 6. Jest (testing library)
 7. es-lint
 8. Prettier
-9. husky
+9. [husky](https://typicode.github.io/husky/#/?id=install)
 
 ### Features
 
